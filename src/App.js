@@ -3,12 +3,16 @@ import { useState } from 'react';
 
 function App() {
   const [emoji, SetEmoji] = useState({
-    happy: '😀',
-    sad: '🙁',
-    cry: '😂',
-    happyPoints: 0,
-    sadPoints: 0,
-    cryPoints: 0,
+    emoji: {
+      happy: '😀',
+      sad: '🙁',
+      cry: '😂',
+    },
+    points: {
+      happyPoints: 0,
+      sadPoints: 0,
+      cryPoints: 0,
+    }
   })
 
   const [winner, setWinner] = useState(null);
@@ -16,22 +20,19 @@ function App() {
   function addPoints(item) {
     SetEmoji((prevState) => ({
       ...prevState,
-      [item]: prevState[item] + 1
+      points: {
+        ...prevState.points,
+        [item]: prevState.points[item] + 1
+      }
     }))
   }
 
   function showResult() {
-    const points = {
-      happyPoints: emoji.happyPoints,
-      sadPoints: emoji.sadPoints,
-      cryPoints: emoji.cryPoints
-    }
-
-     const maxPoints = Math.max(...Object.values(points));
+     const maxPoints = Math.max(...Object.values(emoji.points));
     
-     const winnerKey = Object.keys(points).find(key => points[key] === maxPoints);
+     const winnerKey = Object.keys(emoji.points).find(key => emoji.points[key] === maxPoints);
 
-    const emojiWinner = emoji[winnerKey.replace('Points', '')];
+    const emojiWinner = emoji.emoji[winnerKey.replace('Points', '')];
 
     setWinner(emojiWinner);
   }
@@ -41,18 +42,18 @@ function App() {
       <h1>Голосування за найкращий смайлик</h1>
       <div className='emoji-box'>
         <div className='emoji-item'>
-          <p>{emoji.happy}</p>
-          <p>{emoji.happyPoints}</p>
+          <p>{emoji.emoji.happy}</p>
+          <p>{emoji.points.happyPoints}</p>
           <button onClick={() => {addPoints('happyPoints')}}>Додати бал</button>
         </div>
         <div className='emoji-item'>
-          <p>{emoji.sad}</p>
-          <p>{emoji.sadPoints}</p>
+          <p>{emoji.emoji.sad}</p>
+          <p>{emoji.points.sadPoints}</p>
           <button onClick={() => {addPoints('sadPoints')}}>Додати бал</button>
         </div>
         <div className='emoji-item'>
-          <p>{emoji.cry}</p>
-          <p>{emoji.cryPoints}</p>
+          <p>{emoji.emoji.cry}</p>
+          <p>{emoji.points.cryPoints}</p>
           <button onClick={() => {addPoints('cryPoints')}}>Додати бал</button>
         </div>
       </div>
